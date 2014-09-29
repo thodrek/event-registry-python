@@ -13,6 +13,8 @@ else:
     end_date = datetime.strptime(sys.argv[2], "%Y-%m-%d").date()
     out_prefix = sys.argv[3]
 
+    print location, category, out_prefix
+
 # Initialize event registry connection
 er = EventRegistry(host="http://eventregistry.org",logging=False)
 
