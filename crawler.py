@@ -1,19 +1,22 @@
-import sys
 import cPickle as pickle
+import argparse
 from EventRegistry import *
  
-# Read input
-if len(sys.argv) != 5:
-    print 'Wrong input used. Please use script as "python crawler.py <location> <category> <start_date> <end_date> <output prefix>. Data format should be "YYYY-MM-DD". Example: python crawler.py "United States" "Technology" "2014-08-16" "2014-09-27" "usa_tech"'
-    sys.exit(-1)
-else:
-    location = sys.argv[1]
-    category = sys.argv[2]
-    start_date = datetime.strptime(sys.argv[1], "%Y-%m-%d").date()
-    end_date = datetime.strptime(sys.argv[2], "%Y-%m-%d").date()
-    out_prefix = sys.argv[3]
+# Read input arguments
+parser = argparse.ArgumentParser(description='Please use script as "python crawler.py -l <location> -c <category> -s <start_date> -e <end_date> -o <output prefix>. Data format should be "YYYY-MM-DD". Example: python crawler.py -l "United States" -c "Technology" -s 2014-08-16 -e 2014-09-27 -o usa_tech')
+parser.add_argument('-l','--loc',help="Specifies the event location.",required=True)
+parser.add_argument('-c','--cat',help="Specifies the event category.",required=True)
+parser.add_argument('-s','--sdate',help="Specifies the start date for collecting events.",required=True)
+parser.add_argument('-e','--edate',help="Specifies the end date for collecting events.",required=True)
+parser.add_argument('-o','--out',help="Specifies the output prefix.",required=True)
+args = vars(parser.parse_args())
+            
 
-    print location, category, out_prefix
+location = args['loc']
+category = args['cat']
+out_prefix = args['out']
+start_date = datetime.datetime.strptime(args['sdate'], "%Y-%m-%d").date()
+end_date = datetime.datetime.strptime(args['edate'], "%Y-%m-%d").date()
 
 # Initialize event registry connection
 er = EventRegistry(host="http://eventregistry.org",logging=False)
