@@ -38,9 +38,9 @@ print "Done."
 print "Creating event to articles map"
 eventToArticleMap = {}
 events_checked = 0.0
-total_entries = len(eventURIS['uriList'])
+total_entries = len(eventURIs['uriList'])
 total_articles = []
-for eURI in eventURIS['uriList']:
+for eURI in eventURIs['uriList']:
     # Execute query to extract article list for event uri
     qEv = QueryEvent(eURI)
     qEv.addRequestedResult(RequestEventArticleUris(lang=["eng"]))
