@@ -4,7 +4,7 @@ from EventRegistry import *
 
 def main():
     # Read input
-    if len(sys.argv) !=
+    if len(sys.argv) != 5:
         print 'Wrong input used. Please use script as "python crawler.py <location> <category> <start_date> <end_date> <output prefix>. Data format should be "YYYY-MM-DD". Example: python crawler.py "United States" "Technology" "2014-08-16" "2014-09-27" "usa_tech"'
         sys.exit(-1)
     else:
