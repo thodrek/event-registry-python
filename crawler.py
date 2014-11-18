@@ -3,9 +3,10 @@ import argparse
 from EventRegistry import *
  
 # Read input arguments
-parser = argparse.ArgumentParser(description='Please use script as "python crawler.py -l <location> -c <category> -s <start_date> -e <end_date> -o <output prefix>. Data format should be "YYYY-MM-DD". Example: python crawler.py -l "United States" -c "Technology" -s 2014-08-16 -e 2014-09-27 -o usa_tech')
-parser.add_argument('-l','--loc',help="Specifies the event location.",required=True)
-parser.add_argument('-c','--cat',help="Specifies the event category.",required=True)
+parser = argparse.ArgumentParser(description='Please use script as "python crawler.py -l <location> -co <concept> -c <category> -s <start_date> -e <end_date> -o <output prefix>. Data format should be "YYYY-MM-DD". Example: python crawler.py -l "United States" -c "Technology" -s 2014-08-16 -e 2014-09-27 -o usa_tech')
+parser.add_argument('-l','--loc',help="Specifies the event location.",required=False)
+parser.add_argument('-co','--con',help="Specifies the event concepts.",required=False)
+parser.add_argument('-c','--cat',help="Specifies the event category.",required=False)
 parser.add_argument('-s','--sdate',help="Specifies the start date for collecting events.",required=True)
 parser.add_argument('-e','--edate',help="Specifies the end date for collecting events.",required=True)
 parser.add_argument('-o','--out',help="Specifies the output prefix.",required=True)
@@ -14,6 +15,7 @@ args = vars(parser.parse_args())
 
 location = args['loc']
 category = args['cat']
+concept = args['con']
 out_prefix = args['out']
 start_date = datetime.datetime.strptime(args['sdate'], "%Y-%m-%d").date()
 end_date = datetime.datetime.strptime(args['edate'], "%Y-%m-%d").date()
@@ -23,9 +25,13 @@ er = EventRegistry(host="http://eventregistry.org",logging=False)
 
 # Create query to extract the URIs of all related events
 q=QueryEvents()
-q.addCategory(er.getCategoryUri(category))
+if concept:
+	q.addConcept(er.getConceptUri(concept))
+if category:
+	q.addCategory(er.getCategoryUri(category))
 q.addRequestedResult(RequestEventsUriList())
-q.addLocation(er.getLocationUri(location))
+if location:
+	q.addLocation(er.getLocationUri(location))
 q.setDateLimit(start_date, end_date)
 
 # Execute query
