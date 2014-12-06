@@ -46,6 +46,7 @@ print "Done."
 print "Creating event to articles map"
 eventToArticleMap = {}
 events_checked = 0.0
+except_counter = 0.0
 total_entries = len(eventURIs['uriList'])
 total_articles = []
 for eURI in eventURIs['uriList']:
@@ -58,11 +59,11 @@ for eURI in eventURIs['uriList']:
         eventToArticleMap[eURI] = eventRes['articleUris']
         total_articles.extend(eventRes['articleUris'])
     except:
-        pass
+        except_counter += 1.0
     # Update progress bar
     events_checked += 1.0
     progress = events_checked*100.0/float(total_entries)
-    sys.stdout.write("Event information extraction progress: %10.2f%% (%d out of %d)   \r" % (progress,events_checked,total_entries))
+    sys.stdout.write("Event information extraction progress: %10.2f%% (%d out of %d, exceptions %d)   \r" % (progress,events_checked,total_entries, except_counter))
     sys.stdout.flush()
 print "\n"
 # Store output dictionary to pickle file
@@ -76,6 +77,7 @@ print "Creating article information pickle dictionary"
 articleInfo = {}
 articleDuplicates = {}
 articles_checked = 0.0
+except_counter = 0.0
 total_entries = len(total_articles)
 for aURI in total_articles:
     # Execute query to extract article information
@@ -100,10 +102,10 @@ for aURI in total_articles:
             articleDuplicates[aURI].append(d['uri'])
         # Update progress bar
     except:
-        pass
+        except_counter += 1.0
     articles_checked += 1.0
     progress = articles_checked*100.0/float(total_entries)
-    sys.stdout.write("Article infromation extraction progress: %10.2f%% (%d out of %d)   \r" % (progress,articles_checked,total_entries))
+    sys.stdout.write("Article infromation extraction progress: %10.2f%% (%d out of %d, exceptions %d)   \r" % (progress,articles_checked,total_entries,except_counter))
     sys.stdout.flush()
 print "\n"
 # Store output dictionary to pickle file
