@@ -78,21 +78,22 @@ for aURI in total_articles:
     qAr.addRequestedResult(RequestArticleInfo())
     qAr.addRequestedResult(RequestArticleDuplicatedArticles(count=1000))
     articleRes = er.execQuery(qAr)
-    # Store article information
-    articleInfo[aURI] = {}
-    articleInfo[aURI]['title'] = articleRes['info']['title']
-    articleInfo[aURI]['body'] = articleRes['info']['body']
-    articleInfo[aURI]['date'] = articleRes['info']['date']
-    articleInfo[aURI]['time'] = articleRes['info']['time']
-    articleInfo[aURI]['sourceUri'] = articleRes['info']['sourceUri']
-    articleInfo[aURI]['sourceTitle'] = articleRes['info']['sourceTitle']
-    articleInfo[aURI]['isDuplicate'] = articleRes['info']['isDuplicate']
+    if articleRes:
+        # Store article information
+        articleInfo[aURI] = {}
+        articleInfo[aURI]['title'] = articleRes['info']['title']
+        articleInfo[aURI]['body'] = articleRes['info']['body']
+        articleInfo[aURI]['date'] = articleRes['info']['date']
+        articleInfo[aURI]['time'] = articleRes['info']['time']
+        articleInfo[aURI]['sourceUri'] = articleRes['info']['sourceUri']
+        articleInfo[aURI]['sourceTitle'] = articleRes['info']['sourceTitle']
+        articleInfo[aURI]['isDuplicate'] = articleRes['info']['isDuplicate']
 
-    # Store article duplicate information
-    articleDuplicates[aURI] = []
-    for d in articleRes['duplicatedArticles']['results']:
-        articleDuplicates[aURI].append(d['uri'])
-    # Update progress bar
+        # Store article duplicate information
+        articleDuplicates[aURI] = []
+        for d in articleRes['duplicatedArticles']['results']:
+            articleDuplicates[aURI].append(d['uri'])
+        # Update progress bar
     articles_checked += 1.0
     progress = articles_checked*100.0/float(total_entries)
     sys.stdout.write("Article infromation extraction progress: %10.2f%% (%d out of %d)   \r" % (progress,articles_checked,total_entries))
