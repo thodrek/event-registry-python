@@ -9,7 +9,7 @@ parser.add_argument('-co','--con',help="Specifies the event concepts.",required=
 parser.add_argument('-c','--cat',help="Specifies the event category.",required=False)
 parser.add_argument('-s','--sdate',help="Specifies the start date for collecting events.",required=True)
 parser.add_argument('-e','--edate',help="Specifies the end date for collecting events.",required=True)
-parser.add_argument('-o','--out',help="Specifies the output prefix.",required=True)
+parser.add_argument('-o','--out',help="Specifies the output prefix.",required=False)
 args = vars(parser.parse_args())
             
 
