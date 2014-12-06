@@ -53,9 +53,12 @@ for eURI in eventURIs['uriList']:
     qEv = QueryEvent(eURI)
     qEv.addRequestedResult(RequestEventArticleUris(lang=["eng"]))
     eventRes = er.execQuery(qEv)
-    # Store result
-    eventToArticleMap[eURI] = eventRes['articleUris']
-    total_articles.extend(eventRes['articleUris'])
+    try:
+        # St ore result
+        eventToArticleMap[eURI] = eventRes['articleUris']
+        total_articles.extend(eventRes['articleUris'])
+    except:
+        pass
     # Update progress bar
     events_checked += 1.0
     progress = events_checked*100.0/float(total_entries)
