@@ -53,9 +53,12 @@ for eURI in eventURIs['uriList']:
     qEv = QueryEvent(eURI)
     qEv.addRequestedResult(RequestEventArticleUris(lang=["eng"]))
     eventRes = er.execQuery(qEv)
-    # Store result
-    eventToArticleMap[eURI] = eventRes['articleUris']
-    total_articles.extend(eventRes['articleUris'])
+    try:
+        # St ore result
+        eventToArticleMap[eURI] = eventRes['articleUris']
+        total_articles.extend(eventRes['articleUris'])
+    except:
+        pass
     # Update progress bar
     events_checked += 1.0
     progress = events_checked*100.0/float(total_entries)
@@ -80,7 +83,7 @@ for aURI in total_articles:
     qAr.addRequestedResult(RequestArticleInfo())
     qAr.addRequestedResult(RequestArticleDuplicatedArticles(count=1000))
     articleRes = er.execQuery(qAr)
-    if articleRes:
+    try:
         # Store article information
         articleInfo[aURI] = {}
         articleInfo[aURI]['title'] = articleRes['info']['title']
@@ -96,6 +99,8 @@ for aURI in total_articles:
         for d in articleRes['duplicatedArticles']['results']:
             articleDuplicates[aURI].append(d['uri'])
         # Update progress bar
+    except:
+        pass
     articles_checked += 1.0
     progress = articles_checked*100.0/float(total_entries)
     sys.stdout.write("Article infromation extraction progress: %10.2f%% (%d out of %d)   \r" % (progress,articles_checked,total_entries))
