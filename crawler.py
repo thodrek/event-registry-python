@@ -17,6 +17,8 @@ location = args['loc']
 category = args['cat']
 concept = args['con']
 out_prefix = args['out']
+if not out_prefix:
+    out_prefix = location+'_'+args['sdate']+'_'+args['edate']
 start_date = datetime.datetime.strptime(args['sdate'], "%Y-%m-%d").date()
 end_date = datetime.datetime.strptime(args['edate'], "%Y-%m-%d").date()
 
