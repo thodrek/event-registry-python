@@ -28,12 +28,12 @@ er = EventRegistry(host="http://eventregistry.org",logging=False)
 # Create query to extract the URIs of all related events
 q=QueryEvents()
 if concept:
-	q.addConcept(er.getConceptUri(concept))
+    q.addConcept(er.getConceptUri(concept))
 if category:
-	q.addCategory(er.getCategoryUri(category))
+    q.addCategory(er.getCategoryUri(category))
 q.addRequestedResult(RequestEventsUriList())
 if location:
-	q.addLocation(er.getLocationUri(location))
+    q.addLocation(er.getLocationUri(location))
 q.setDateLimit(start_date, end_date)
 
 # Execute query
