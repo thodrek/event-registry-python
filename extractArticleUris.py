@@ -3,6 +3,8 @@ __author__ = 'thodrek'
 import cPickle as pickle
 import argparse
 from EventRegistry import *
+import socket
+import os
 
 # Read input arguments
 parser = argparse.ArgumentParser(description='Please use script as "python crawler.py -s <start_date> -e <end_date>. Data format should be "YYYY-MM-DD". Example: python crawler.py -l "United States" -c "Technology" -s 2014-08-16 -e 2014-09-27')
@@ -11,7 +13,10 @@ parser.add_argument('-e','--edate',help="Specifies the end date for collecting e
 args = vars(parser.parse_args())
 
 print "Reading input parameters...",
-out_prefix = '/scratch0/CIDRDemo/EventReg_Data/articleUris_'+args['sdate']+'_'+args['edate']
+if socket.gethostname() == 'balos.umiacs.umd.edu':
+    out_prefix = '/scratch0/CIDRDemo/EventReg_Data/articleUris_'+args['sdate']+'_'+args['edate']
+else:
+    out_prefix = '/tmp/articleUris_'+args['sdate']+'_'+args['edate']
 start_date = datetime.datetime.strptime(args['sdate'], "%Y-%m-%d").date()
 end_date = datetime.datetime.strptime(args['edate'], "%Y-%m-%d").date()
 print "DONE."
@@ -41,3 +46,8 @@ else:
 # store output
 uris_filename = out_prefix+".pkl"
 pickle.dump(res,open(uris_filename,"wb"))
+
+# if on remote server transfer code to balos
+if socket.gethostname() != 'balos.umiacs.umd.edu':
+    os_command = "scp "+uris_filename+" thodrek@balos.umiacs.umd.edu:/scratch0/CIDRDemo/EventReg_Data"
+    x = os.system(os_command)
