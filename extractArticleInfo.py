@@ -51,6 +51,7 @@ else:
 # Iterate over events and extract article info
 print "Retrieving articles..."
 events_processed = 0.0
+errors = 0.0
 total_entries = len(res['uriList'])
 eventInfo = {}
 eventArticleInfo = {}
@@ -61,7 +62,7 @@ for eURI in res['uriList']:
     qEv.addRequestedResult(RequestEventArticles(count = 50, lang=["eng"]))
     # execute query
     evInfoArticles = er.execQuery(qEv)
-    if res:
+    if evInfoArticles:
         if 'articles' in evInfoArticles and 'info' in evInfoArticles:
             # grab event info
             eventInfo[eURI] = evInfoArticles['info']
@@ -69,13 +70,15 @@ for eURI in res['uriList']:
             eventArticleInfo[eURI] = evInfoArticles['articles']['results']
         else:
             print 'No articles or info in result!'
+            errors += 1
     else:
         print 'NoneType returned!'
+        errors += 1
 
     # update count and print progress
     events_processed += 1.0
     progress = events_processed*100.0/float(total_entries)
-    sys.stdout.write("Article information extraction progress: %10.2f%% (%d out of %d)   \r" % (progress,events_processed,total_entries))
+    sys.stdout.write("Article information extraction progress: %10.2f%% (%d out of %d, errors %d)   \r" % (progress,events_processed,total_entries, errors))
     sys.stdout.flush()
 
 print "DONE."
