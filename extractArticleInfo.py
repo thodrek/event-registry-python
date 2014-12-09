@@ -70,6 +70,7 @@ for eURI in res['uriList']:
             eventArticleInfo[eURI] = evInfoArticles['articles']['results']
         else:
             print 'No articles or info in result!'
+            print evInfoArticles
             errors += 1
     else:
         print 'NoneType returned!'
